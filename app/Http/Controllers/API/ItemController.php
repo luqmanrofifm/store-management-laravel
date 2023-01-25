@@ -10,9 +10,14 @@ use Illuminate\Http\Request;
 class ItemController extends Controller
 {
     public function index(){
-        $item = Item::all('nama','price','deskripsi');
+        $item = Item::all('id','nama','price','deskripsi');
+        $id = Item::all('id')->pluck("id");
 
-        return response()->json($item);
+        return response()->json([
+            "status" => "success",
+            "list_id" => $id,
+            "data" => $item
+        ]);
     }
 
     public function store(Request $request){
@@ -30,7 +35,7 @@ class ItemController extends Controller
         } catch(Exception $e){
             return response()->json([
                 'status' => 'failed',
-                'errors' => ['message' => 'Server error']
+                'message' => 'Server error'
             ], 500);
         }
 
@@ -51,7 +56,7 @@ class ItemController extends Controller
         if ($item == null){
             return response()->json([
                 'status' => 'failed',
-                'errors' => ['message' => 'Data tidak ditemukan']
+                'message' => 'Data tidak ditemukan'
             ], 404);
         }
 
@@ -64,7 +69,7 @@ class ItemController extends Controller
         } catch(Exception $e){
             return response()->json([
                 'status' => 'failed',
-                'errors' => ['message' => 'Server error']
+                'message' => 'Server error'
             ], 500);
         }
 
@@ -80,7 +85,7 @@ class ItemController extends Controller
         if ($item == null){
             return response()->json([
                 'status' => 'failed',
-                'errors' => ['message' => 'Data tidak ditemukan']
+                'message' => 'Data tidak ditemukan'
             ], 404);
         }
 
@@ -89,7 +94,7 @@ class ItemController extends Controller
         } catch(Exception $e){
             return response()->json([
                 'status' => 'failed',
-                'errors' => ['message' => 'Server error']
+                'errors' => 'Server error'
             ], 500);
         }
 
