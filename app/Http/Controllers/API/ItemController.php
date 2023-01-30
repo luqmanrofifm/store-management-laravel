@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class ItemController extends Controller
 {
     public function index(){
-        $item = Item::all('id','nama','price','deskripsi');
+        $item = Item::all('id','nama','price','satuan','deskripsi');
         $id = Item::all('id')->pluck("id");
 
         return response()->json([
@@ -23,13 +23,14 @@ class ItemController extends Controller
     public function store(Request $request){
         $request->validate([
             'nama' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'satuan'=>'required'
         ]);
-
         try {
             Item::create([
                 'nama' => $request->nama,
                 'price' => $request->price,
+                'satuan' => $request->satuan,
                 'deskripsi' => $request->deskripsi
             ]);
         } catch(Exception $e){
@@ -48,7 +49,8 @@ class ItemController extends Controller
     public function update($id, Request $request){
         $request->validate([
             'nama' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'satuan' => 'required'
         ]);
 
         $item = Item::find($id);
@@ -63,6 +65,7 @@ class ItemController extends Controller
         try {
             $item->nama = $request->nama;
             $item->price = $request->price;
+            $item->satuan = $request->satuan;
             $item->deskripsi = $request->deskripsi;
 
             $item->save();
@@ -75,7 +78,7 @@ class ItemController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data berhasil ditambahkan'
+            'message' => 'Data berhasil diubah'
         ]);
     }
 
@@ -100,7 +103,7 @@ class ItemController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Data berhasil ditambahkan'
+            'message' => 'Data berhasil dihapus'
         ]);
     }
 }
